@@ -53,106 +53,80 @@ export async function generateImage(input: GenerateImageInput): Promise<Buffer> 
   if (!apiKey) throw new Error('NOVELAI_API_KEY が設定されていません')
 
   const v4 = isV4Model(input.model)
+  const hasRef = !!input.referenceImageBase64
   const refStrength = input.referenceStrength ?? DEFAULT_REFERENCE_STRENGTH
   const refFidelity = input.referenceFidelity ?? DEFAULT_REFERENCE_FIDELITY
 
-  const v4PromptFields = v4
-    ? {
-        params_version: 3,
-        v4_prompt: {
-          caption: {
-            base_caption: input.positivePrompt,
-            char_captions: [],
-          },
-          use_coords: false,
-          use_order: true,
-        },
-        v4_negative_prompt: {
-          caption: {
-            base_caption: input.negativePrompt,
-            char_captions: [],
-          },
-          legacy_uc: false,
-        },
-      }
-    : {}
+  // 公式リクエストと同じキー順序で parameters を構築
+  const parameters: Record<string, unknown> = {
+    params_version: 3,
+    width: 832,
+    height: 1216,
+    scale: input.parameters.cfg_scale,
+    sampler: input.parameters.sampler,
+    steps: input.parameters.steps,
+    ...(input.parameters.seed != null && { seed: input.parameters.seed }),
+    n_samples: 1,
+    ucPreset: 0,
+    qualityToggle: true,
+    autoSmea: false,
+    dynamic_thresholding: false,
+    controlnet_strength: 1,
+    legacy: false,
+    add_original_image: true,
+    cfg_rescale: 0,
+    noise_schedule: input.parameters.noise_schedule,
+    legacy_v3_extend: false,
+    skip_cfg_above_sigma: null,
+    use_coords: false,
+    legacy_uc: false,
+    normalize_reference_strength_multiple: true,
+    inpaintImg2ImgStrength: 1,
+    characterPrompts: [],
+    // 参照画像あり: v4_prompt の前に director_reference_descriptions 系
+    ...(hasRef && v4 && {
+      director_reference_descriptions: [{
+        caption: { base_caption: 'character&style', char_captions: [] },
+        legacy_uc: false,
+      }],
+      director_reference_information_extracted: [refFidelity],
+      director_reference_strength_values: [refStrength],
+      director_reference_secondary_strength_values: [
+        Math.round((1 - refStrength) * 100) / 100,
+      ],
+    }),
+    ...(v4 && {
+      v4_prompt: {
+        caption: { base_caption: input.positivePrompt, char_captions: [] },
+        use_coords: false,
+        use_order: true,
+      },
+      v4_negative_prompt: {
+        caption: { base_caption: input.negativePrompt, char_captions: [] },
+        legacy_uc: false,
+      },
+    }),
+    negative_prompt: input.negativePrompt,
+    deliberate_euler_ancestral_bug: false,
+    prefer_brownian: true,
+    image_format: 'png',
+    // 参照画像あり: image_format の後に cached images
+    ...(hasRef && v4 && {
+      director_reference_images_cached: [{ cache_secret_key: '' }],
+    }),
+    stream: 'msgpack',
+  }
 
-  const referenceFields = input.referenceImageBase64
-    ? v4
-      ? {
-          director_reference_descriptions: [{
-            caption: {
-              base_caption: 'character&style',
-              char_captions: [],
-            },
-            legacy_uc: false,
-          }],
-          //director_reference_images: [input.referenceImageBase64],
-          director_reference_images_cached:[
-            {
-                cache_secret_key:"e065d29a2110946809acf1c683853dcde2f58201d8c9fa89d60ad182805a844b"
-            }
-          ],
-          director_reference_information_extracted: [refFidelity],
-          director_reference_strength_values: [refStrength],
-          director_reference_secondary_strength_values: [
-            Math.round((1 - refStrength) * 100) / 100,
-          ],
-          normalize_reference_strength_multiple: true,
-        }
-      : {
-          reference_image: input.referenceImageBase64,
-          reference_information_extracted: refFidelity,
-          reference_strength: refStrength,
-        }
-    : {}
-
-  const body: Record<string, unknown> = {
+  const body = {
     input: input.positivePrompt,
     model: input.model,
     action: 'generate',
-    parameters: {
-      params_version: 3,
-      width: 832,
-      height: 1216,
-      scale: input.parameters.cfg_scale,
-      sampler: input.parameters.sampler,
-      steps: input.parameters.steps,
-      n_samples: 1,
-      ucPreset: 0,
-      qualityToggle: true,
-      autoSmea: false,
-      dynamic_thresholding: false,
-      controlnet_strength: 1,
-      legacy: false,
-      add_original_image: true,
-      cfg_rescale: 0,
-      noise_schedule: input.parameters.noise_schedule,
-      legacy_v3_extend: false,
-      skip_cfg_above_sigma: null,
-      use_coords: false,
-      legacy_uc: false,
-      inpaintImg2ImgStrength: 1,
-      characterPrompts: [],
-      deliberate_euler_ancestral_bug: false,
-      prefer_brownian: true,
-      image_format: 'png',
-      negative_prompt: input.negativePrompt,
-      ...v4PromptFields,
-      ...(input.parameters.seed != null && { seed: input.parameters.seed }),
-      ...referenceFields,
-    },
+    parameters,
     use_new_shared_trial: true,
   }
 
-  // デバッグ: NovelAI に送る JSON 全文（base64 は先頭30文字に置換してターミナルに出力）
-  const bodyForLog = JSON.parse(JSON.stringify(body, (_key, value) => {
-    if (typeof value === 'string' && value.length > 200) {
-      return `[base64(${value.length}): ${value.substring(0, 30)}...]`
-    }
-    return value
-  }))
-  console.log('[NovelAI] full request body:', JSON.stringify(bodyForLog, null, 2))
+  // デバッグ: NovelAI に送るリクエスト JSON 全文をターミナルに出力
+  console.log('[NovelAI] full request body:', JSON.stringify(body, null, 2))
 
   const res = await fetch(`${NOVELAI_API}/ai/generate-image`, {
     method: 'POST',
