@@ -1,0 +1,28 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--border);
+  background: #222222;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.links {
+  display: flex;
+  gap: 24px;
+}
+
+.link {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.link:hover {
+  color: var(--text);
+}

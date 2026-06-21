@@ -1,0 +1,59 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+
+.image {
+  width: 180px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.prompt {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  word-break: break-all;
+  color: var(--text);
+}
+
+.negative {
+  font-size: 0.8rem;
+  color: #f87171;
+  word-break: break-all;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.params {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.refLink {
+  font-size: 0.78rem;
+  color: #818cf8;
+}

@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+.btn:hover {
+  background: #444;
+}
+
+.info {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

@@ -1,0 +1,264 @@
+.container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.promptHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.promptButtons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.qualityBtn {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.qualityBtn:hover {
+  border-color: #4f9e6f;
+  color: #4f9e6f;
+}
+
+.qualityActive {
+  background: #2d6a4f;
+  border-color: #2d6a4f;
+  color: #fff;
+}
+
+.qualityActive:hover {
+  background: #1b4332;
+  color: #fff;
+}
+
+.nsfwBtn {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 3px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+
+.nsfwBtn:hover {
+  border-color: #e05555;
+  color: #e05555;
+}
+
+.nsfwActive {
+  background: #e05555;
+  border-color: #e05555;
+  color: #fff;
+}
+
+.nsfwActive:hover {
+  background: #c43f3f;
+  color: #fff;
+}
+
+.fileRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.fileBtn {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #444;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.fileBtn:hover {
+  background: #555;
+}
+
+.fileName {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.clearFileBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 4px;
+}
+
+.clearFileBtn:hover {
+  color: var(--text);
+}
+
+.referenceSliders {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.sliderLabel {
+  display: grid;
+  grid-template-columns: 60px 40px 1fr;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.sliderValue {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.slider {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.params {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.paramLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.paramInput,
+.paramSelect {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-input);
+  color: var(--text-input);
+  font-size: 0.85rem;
+}
+
+.paramInput:focus,
+.paramSelect:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+.submitBtn {
+  padding: 10px 32px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+
+.resultTitle {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.resultImage {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.downloadBtn {
+  padding: 6px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: #818cf8;
+  font-size: 0.85rem;
+}
+
+.downloadBtn:hover {
+  background: #2a2860;
+}
