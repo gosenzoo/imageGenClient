@@ -100,6 +100,14 @@ export default function GenerateForm({ presets }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.form}>
+        {/* ページヘッダー */}
+        <div className={styles.formHeader}>
+          <h1 className={styles.pageTitle}>画像生成</h1>
+          <button type="button" onClick={handleSubmit} className={styles.submitBtn} disabled={loading}>
+            {loading ? '生成中...' : '生成'}
+          </button>
+        </div>
+
         {/* ポジティブプロンプト */}
         <section className={styles.section}>
           <div className={styles.promptHeader}>
@@ -285,23 +293,23 @@ export default function GenerateForm({ presets }: Props) {
         </section>
 
         {error && <p className={styles.error}>{error}</p>}
-
-        <button type="button" onClick={handleSubmit} className={styles.submitBtn} disabled={loading}>
-          {loading ? '生成中...' : '画像を生成'}
-        </button>
       </div>
 
-      {/* 生成結果 */}
-      {generatedImageUrl && (
-        <div className={styles.result}>
-          <h2 className={styles.resultTitle}>生成結果</h2>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={generatedImageUrl} alt="生成画像" className={styles.resultImage} />
-          <a href={generatedImageUrl} download className={styles.downloadBtn}>
-            ダウンロード
-          </a>
-        </div>
-      )}
+      {/* 生成結果パネル（常に表示） */}
+      <div className={styles.result}>
+        {generatedImageUrl ? (
+          <>
+            <h2 className={styles.resultTitle}>生成結果</h2>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={generatedImageUrl} alt="生成画像" className={styles.resultImage} />
+            <a href={generatedImageUrl} download className={styles.downloadBtn}>
+              ダウンロード
+            </a>
+          </>
+        ) : (
+          <div className={styles.placeholder} />
+        )}
+      </div>
     </div>
   )
 }

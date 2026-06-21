@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  gap: 32px;
+  gap: 24px;
   align-items: flex-start;
 }
 
@@ -210,6 +210,20 @@
   font-size: 0.85rem;
 }
 
+.formHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.pageTitle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--text);
+  margin: 0;
+}
+
 .submitBtn {
   padding: 10px 32px;
   background: var(--accent);
@@ -218,7 +232,6 @@
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  align-self: flex-start;
 }
 
 .submitBtn:disabled {
@@ -231,12 +244,25 @@
 }
 
 .result {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
   min-width: 0;
+  position: sticky;
+  top: 20px;
+}
+
+.placeholder {
+  /* ナビ(~52px) + main padding-top(24px) + sticky top(20px) を差し引いた高さに収める */
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 832 / 1216;
+  max-height: calc(100dvh - 96px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
 }
 
 .resultTitle {
@@ -247,6 +273,9 @@
 
 .resultImage {
   max-width: 100%;
+  max-height: calc(100dvh - 96px);
+  width: auto;
+  height: auto;
   border-radius: 8px;
   border: 1px solid var(--border);
 }
@@ -261,4 +290,21 @@
 
 .downloadBtn:hover {
   background: #2a2860;
+}
+
+/* 縦長画面（スマートフォン等）では従来の縦積みレイアウト */
+@media (orientation: portrait), (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .result {
+    position: static;
+    width: 100%;
+  }
+
+  /* 画像がないときのプレースホルダーは縦長画面では非表示 */
+  .result:has(> .placeholder) {
+    display: none;
+  }
 }
