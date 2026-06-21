@@ -27,6 +27,21 @@ export async function createPreset(
   revalidatePath('/presets')
 }
 
+export async function updatePreset(
+  id: string,
+  type: PresetType,
+  label: string,
+  content: string
+): Promise<void> {
+  const { error } = await supabase
+    .from('prompt_presets')
+    .update({ type, label, content })
+    .eq('id', id)
+
+  if (error) throw new Error(`プリセット更新失敗: ${error.message}`)
+  revalidatePath('/presets')
+}
+
 export async function deletePreset(id: string): Promise<void> {
   const { error } = await supabase
     .from('prompt_presets')
