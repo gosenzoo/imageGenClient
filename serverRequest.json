@@ -1,5 +1,5 @@
 {
-	"input": "loli, serafuku, long hair, , very aesthetic, masterpiece, no text",
+	"input": "loli, serafuku, long hair, very aesthetic, masterpiece, no text",
 	"model": "nai-diffusion-4-5-full",
 	"action": "generate",
 	"parameters": {
@@ -9,7 +9,6 @@
 		"scale": 5,
 		"sampler": "k_euler_ancestral",
 		"steps": 23,
-		"seed": 423024710,
 		"n_samples": 1,
 		"ucPreset": 0,
 		"qualityToggle": true,
@@ -29,7 +28,7 @@
 		"characterPrompts": [],
 		"v4_prompt": {
 			"caption": {
-				"base_caption": "loli, serafuku, long hair, , very aesthetic, masterpiece, no text",
+				"base_caption": "loli, serafuku, long hair, very aesthetic, masterpiece, no text",
 				"char_captions": []
 			},
 			"use_coords": false,
@@ -37,12 +36,12 @@
 		},
 		"v4_negative_prompt": {
 			"caption": {
-				"base_caption": "nsfw, lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+				"base_caption": "nsfw, , lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
 				"char_captions": []
 			},
 			"legacy_uc": false
 		},
-		"negative_prompt": "nsfw, lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+		"negative_prompt": "nsfw, , lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
 		"deliberate_euler_ancestral_bug": false,
 		"prefer_brownian": true,
 		"image_format": "png",

@@ -48,7 +48,7 @@ export default function GenerateForm({ presets }: Props) {
 
     try {
       let finalPositivePrompt = nsfw ? `nsfw, ${positivePrompt}` : positivePrompt
-      let finalNegativePrompt = negativePrompt
+      let finalNegativePrompt = nsfw ? negativePrompt : `nsfw, ${negativePrompt}`
       if (qualityTags) {
         finalPositivePrompt += QUALITY_POSITIVE
         finalNegativePrompt += QUALITY_NEGATIVE

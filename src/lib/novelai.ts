@@ -27,7 +27,7 @@ export const NOISE_SCHEDULE_OPTIONS = [
 export const DEFAULT_PARAMETERS: GenerationParameters = {
   steps: 23,
   cfg_scale: 5,
-  noise_schedule: 'native',
+  noise_schedule: 'karras',
   sampler: 'k_euler_ancestral',
 }
 
