@@ -31,7 +31,7 @@ export const DEFAULT_PARAMETERS: GenerationParameters = {
   sampler: 'k_euler_ancestral',
 }
 
-export const DEFAULT_REFERENCE_STRENGTH = 0.6
+export const DEFAULT_REFERENCE_STRENGTH = 1.0
 export const DEFAULT_REFERENCE_FIDELITY = 1.0
 
 type GenerateImageInput = {
@@ -80,7 +80,7 @@ export async function generateImage(input: GenerateImageInput): Promise<Buffer> 
     skip_cfg_above_sigma: null,
     use_coords: false,
     legacy_uc: false,
-    normalize_reference_strength_multiple: true,
+    normalize_reference_strength_multiple: false,
     inpaintImg2ImgStrength: 1,
     characterPrompts: [],
     // 参照画像あり: v4_prompt の前に director_reference_descriptions 系
@@ -89,10 +89,10 @@ export async function generateImage(input: GenerateImageInput): Promise<Buffer> 
         caption: { base_caption: 'character&style', char_captions: [] },
         legacy_uc: false,
       }],
-      director_reference_information_extracted: [refFidelity],
+      director_reference_information_extracted: [1.0],
       director_reference_strength_values: [refStrength],
       director_reference_secondary_strength_values: [
-        Math.round((1 - refStrength) * 100) / 100,
+        Math.round((1 - refFidelity) * 100) / 100,
       ],
     }),
     ...(v4 && {
@@ -110,9 +110,9 @@ export async function generateImage(input: GenerateImageInput): Promise<Buffer> 
     deliberate_euler_ancestral_bug: false,
     prefer_brownian: true,
     image_format: 'png',
-    // 参照画像あり: image_format の後に cached images
+    // 参照画像あり: base64実データを送信
     ...(hasRef && v4 && {
-      director_reference_images_cached: [{ cache_secret_key: '' }],
+      director_reference_images: [input.referenceImageBase64],
     }),
     stream: 'msgpack',
   }

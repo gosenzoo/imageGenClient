@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import sharp from 'sharp'
 import { generateImage } from '@/lib/novelai'
 import { supabase, GENERATED_BUCKET, REFERENCE_BUCKET } from '@/lib/supabase'
 import type { GenerationParameters } from '@/lib/types'
@@ -21,13 +22,18 @@ export async function POST(req: NextRequest) {
     let referenceImageBase64: string | undefined
     if (referenceFile && referenceFile.size > 0) {
       const refBuffer = Buffer.from(await referenceFile.arrayBuffer())
-      referenceImageBase64 = refBuffer.toString('base64')
-      console.log('[route] referenceFile type:', referenceFile.type, 'size:', referenceFile.size)
 
-      const refPath = `${Date.now()}_ref.${referenceFile.name.split('.').pop()}`
+      // SDK に合わせて 1024×1536 の PNG にリサイズ（アスペクト比保持・黒パディング）
+      const resizedBuffer = await sharp(refBuffer)
+        .resize(1024, 1536, { fit: 'contain', background: { r: 0, g: 0, b: 0 } })
+        .png()
+        .toBuffer()
+      referenceImageBase64 = resizedBuffer.toString('base64')
+
+      const refPath = `${Date.now()}_ref.png`
       const { error: refError } = await supabase.storage
         .from(REFERENCE_BUCKET)
-        .upload(refPath, refBuffer, { contentType: referenceFile.type })
+        .upload(refPath, resizedBuffer, { contentType: 'image/png' })
       if (refError) throw new Error(`参照画像アップロード失敗: ${refError.message}`)
 
       const { data: refData } = supabase.storage

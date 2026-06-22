@@ -1,0 +1,5 @@
+.badge {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
